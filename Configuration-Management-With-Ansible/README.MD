@@ -14,7 +14,7 @@ The control machine is the central server where Ansible is installed. It is resp
 
 ### Playbooks
 
-Playbooks are YAML files that define a series of tasks to be executed on remote hosts. Each playbook consists of one or more "plays," and each play can target different groups of hosts. Playbooks are the heart of Ansible’s configuration, deployment, and orchestration language.
+Playbooks are YAML files that define a series of tasks to be executed on remote hosts. Each playbook consists of one or more "plays," and each play can target different groups of hosts. 
 
 ### Inventory
 
@@ -26,7 +26,7 @@ Hosts, also known as managed nodes, are the systems that Ansible manages. These 
 
 ### Ansible Agents
 
-Ansible uses an agentless architecture, meaning it does not require any software to be installed on the managed nodes. Instead, it uses SSH (or WinRM for Windows systems) to communicate with and manage the hosts.
+Ansible uses an agentless architecture, meaning it does not require any software to be installed on the managed nodes. Instead, it uses SSH to communicate with and manage the hosts.
 
 ---
 
@@ -45,7 +45,7 @@ Ansible is an automation tool that helps IT administrators manage infrastructure
 
 ### How Does Ansible Work?
 
-Ansible works by connecting to managed nodes via SSH (or WinRM for Windows) from the control machine. It then executes tasks defined in playbooks on these nodes. Tasks can include running commands, installing packages, managing files, and configuring services. Ansible modules (small programs that do specific tasks) are executed on the managed nodes to perform these tasks.
+Ansible works by connecting to managed nodes via SSH from the control machine. It then executes tasks defined in playbooks on these nodes. Tasks can include running commands, installing packages, managing files, and configuring services. Ansible modules (small programs that do specific tasks) are executed on the managed nodes to perform these tasks.
 
 ### Where Can Ansible Be Applied?
 
@@ -54,6 +54,33 @@ Ansible works by connecting to managed nodes via SSH (or WinRM for Windows) from
 - **Orchestration**: Manage the execution order of interdependent tasks across multiple systems.
 - **Provisioning**: Set up new servers and environments in the cloud or on-premises.
 - **Continuous Delivery**: Integrate with CI/CD pipelines to automate testing and deployment processes.
+
+
+### Setting up Ansible
+
+To set up ansible. Use the following commands.
+
+
+Install the software-properties-common package, which allows you to manage software repositories easily:
+
+```bash
+sudo apt-get install software-properties-common
+```
+Add the Ansible PPA (Personal Package Archive) repository to your system:
+
+```bash
+sudo apt-add-repository ppa:ansible/ansible
+```
+Update the package index to ensure it includes the latest packages from the newly added repository:
+
+```bash
+sudo apt-get update -y
+```
+Finally, install Ansible:
+
+```bash
+sudo apt-get install ansible -y
+```
 
 ### Communinicating with your EC2 with Ansible
 
