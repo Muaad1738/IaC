@@ -55,3 +55,65 @@ Ansible works by connecting to managed nodes via SSH (or WinRM for Windows) from
 - **Provisioning**: Set up new servers and environments in the cloud or on-premises.
 - **Continuous Delivery**: Integrate with CI/CD pipelines to automate testing and deployment processes.
 
+### Communinicating with your EC2 with Ansible
+
+We need to move the SSH key to the Ansible control machine to communicate with EC2 instances.
+
+Secure Access: The SSH key is required to authenticate and  establish a secure connection to the EC2 instances. Without the SSH key, Ansible cannot connect to the instances.
+
+To do this we need to move the key from our local machine.
+```bash
+scp -i ~/.ssh/tech258.pem ~/.ssh/tech258.pem ubuntu@3.252.237.34:~/.ssh/
+```
+Don't forget to change the ip to the one you're currently using.
+
+![alt text](Images/key.png)
+
+Run the command 
+```bash
+cd /etc/ansible
+```
+The default Ansible configuration files are typically located, including ansible.cfg, and the default inventory file named hosts.
+
+If you configure the hosts file. You can edit this file to add your EC2 instances. 
+```bash
+[app]
+
+3.250.63.68 ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/tech258.pem
+
+[db]
+
+52.17.72.168 ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/tech258.pem
+```
+If you then run the following command:
+```bash 
+ sudo ansible all -m ping
+```
+- What It Does
+    - Targets All Hosts: The command ansible all targets all hosts listed in the inventory file.
+    - Uses Ping Module: The -m ping option specifies the use of Ansible's ping module to check connectivity.
+    - SSH Authentication: Ansible uses the SSH keys specified in the inventory file to authenticate and connect to each host.
+
+Successful output would look like this. 
+
+![alt text](Images/ping.png)
+
+Using Ansible to Copy Files to EC2 Instances
+```bash
+sudo ansible all -i hosts -m copy -a "src=/home/ubuntu/testing-controller.txt dest=/home/ubuntu/testting-controller.txt" 
+```
+The ansible command can be used to automate file transfers to multiple EC2 instances.
+
+- What It Does
+    - ansible all: Targets all hosts defined in the inventory.
+    - -i hosts: Specifies the inventory file to use. Here, hosts is assumed to be located in the current directory.
+    - -m copy: Specifies the Ansible module to use for copying files.
+    - -a "src=/home/ubuntu/testing-controller.txt dest=/home/ubuntu/testting-controller.txt": Provides arguments to the copy module. It specifies the source file (src) and the destination file (dest) on the target hosts.
+  
+Successful output should look like.
+![alt text](Images/move.png)
+
+
+
+
+
