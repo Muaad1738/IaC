@@ -1,0 +1,48 @@
+# add the name of the hosts app
+- hosts: app
+
+# see the logs gathers facts
+  gather_facts: yes
+
+# provide admin access - sudo
+  become: true
+
+#
+  tasks:
+    - name: Install prerequisites
+      apt:
+        name:
+          - curl
+          - git
+        state: present
+    - name: Add NodeSource repository
+      shell: curl -sL https://deb.nodesource.com/setup_10.x | bash -
+
+    - name: Install Node.js
+      apt:
+        name: nodejs
+        state: present
+
+    - name: Clone the app repository
+      git:
+        repo: "https://github.com/Muaad1738/CI-CD.git"
+        dest: "/var/www/app"
+        version: main
+
+    - name: Install app dependencies
+      command: npm install
+      args:
+        chdir: "/var/www/app"
+
+    - name: Install PM2 globally
+      npm:
+        name: pm2
+        global: yes
+
+    - name: Kill any existing PM2 processes
+      command: pm2 kill
+
+    - name: Start the app with PM2
+      command: pm2 start app/app.js
+      args:
+        chdir: "/var/www/app"
